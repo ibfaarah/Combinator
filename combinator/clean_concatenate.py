@@ -30,7 +30,7 @@ def read_compressed_files(path, compression):
             df = pd.read_csv(file, engine='python', compression = 'infer', header = 0, sep=',')
             file_list.append(df)
     
-    elif compression == 'gzip':
+    elif compression == True:
         directory = glob.glob(path + "/*.csv.gz")
         for file in directory:
             df = pd.read_csv(file, engine='python', compression = 'gzip', header = 0, sep=',')
@@ -60,7 +60,7 @@ def read_compressed_filenames(path, compression=None):
     '''
     if compression is None:
         filenames = glob.glob(path + "/*.csv")
-    elif compression == 'gzip':
+    elif compression == True:
         filenames = glob.glob(path + "/*.csv.gz")
     
     return filenames

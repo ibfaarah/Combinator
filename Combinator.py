@@ -71,9 +71,14 @@ if __name__ == '__main__':
             raise ValueError('The --out flag is required')
     
     if args.create_summary:
-    
-        list_of_files = read_compressed_files(args.create_summary, compression= args.gzip)
-        filenames = read_compressed_filenames(args.create_summary, compression=args.gzip)
+        
+        if args.gzip:
+            list_of_files = read_compressed_files(args.create_summary, compression= True)
+            filenames = read_compressed_filenames(args.create_summary, compression= True)
+        else:
+            list_of_files = read_compressed_files(args.create_summary, compression= None)
+            filenames = read_compressed_filenames(args.create_summary, compression= None)
+        
         files_key = dict(zip(filenames, list_of_files))
         list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key)
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
