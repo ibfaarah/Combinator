@@ -1,0 +1,7 @@
+- combine all file in a folder into a single file 
+	option 1: combines all files in a folder into a singl file
+		*if a file has an issue check wether this can be ractified, e.g. if it is just a typo in the header -> change the header before concatinating
+		*if the error is bigger e.g. trait codes within the beta coloum record error and move to next file 
+	option 2: adds a list of files to already existing big file
+- before combining files the script need to check that all files have the same header, same number of coloums, and same order of coloums
+- if possible, after the final file is created check that the data type for each coloum are as expeted. Something like: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dtypes.html
