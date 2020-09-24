@@ -82,7 +82,11 @@ if __name__ == '__main__':
         files_key = dict(zip(filenames, list_of_files))
         list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key)
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
+        
+        if not list_of_files:
+            raise ValueError('For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
         concat_file = concatenate_all_tables(file_list = list_of_files, out=args.out)
+
         print('....Successful concatenation of' + " " + args.out + "!")
 
 

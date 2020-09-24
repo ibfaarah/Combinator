@@ -20,8 +20,6 @@ def read_compressed_files(path, compression):
     (2) When implementing this CycleCloud change '/*.csv' to '/*.gz'
     '''
     file_list = []
-
-    
     
     if compression is None:
         directory = glob.glob(path + "/*.csv")
@@ -29,18 +27,26 @@ def read_compressed_files(path, compression):
         for file in directory:
             df = pd.read_csv(file, engine='python', compression = 'infer', header = 0, sep=',')
             file_list.append(df)
-    
-    elif compression == True:
+            
+        if not file_list:
+            raise ValueError('For files that are (.csv.gz) please use --gzip flag')
+
+    if compression == True:
         directory = glob.glob(path + "/*.csv.gz")
+
         for file in directory:
             df = pd.read_csv(file, engine='python', compression = 'gzip', header = 0, sep=',')
             file_list.append(df)
 
-    else:
-        print('Files are requied in the .csv or .csv.gz formats')
+            if not file_list:
+                raise ValueError('For files that are (.csv.gz) please use --gzip flag')
+
+    # else:
+    #     print('Files are requied in the .csv or .csv.gz formats')
     
-    if not file_list:
-        raise ValueError('For files that are (.csv.gz) please use --gzip flag')
+    # if not file_list:
+    #     raise ValueError('For files that are (.csv.gz) please use --gzip flag')
+
     return file_list
 
 
