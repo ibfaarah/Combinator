@@ -27,9 +27,6 @@ def read_compressed_files(path, compression):
         for file in directory:
             df = pd.read_csv(file, engine='python', compression = 'infer', header = 0, sep=',')
             file_list.append(df)
-            
-        if not file_list:
-            raise ValueError('For files that are (.csv.gz) please use --gzip flag')
 
     if compression == True:
         directory = glob.glob(path + "/*.csv.gz")
@@ -94,8 +91,8 @@ def check_headers(file_list, filenames, dataset, files_key):
     ewas_column_names = ['data_set_identifier', 'probe_name', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number']
     allele_freq_ref_column_names = ['chromosome', 'allele', 'cohort', 'ethnicity', 'genotyping_method', 'alternative_allele_frequency', 'minor_allele']
     allele_MAP_column_names = ['chromosome', 'position', 'allele', 'type']
-    ethnicity_codes = ['ETHNICITY', 'DESCRIPTION']
-    variant_annotation = ['chromosome', 'position', 'allele', 'vep_sequence_chance', 'gene', 'feature', 'feature_type', 'consequence', 'cdna_position', 'cds_position', 'protein_position', 'amino_acids', 'codons', 'existing_variation', 'distance', 'strand', 'sift', 'polyphen', 'motif_name', 'motif_position', 'high_inf_position', 'motif_score_changes']
+    ethnicity_codes_column_names = ['ETHNICITY', 'DESCRIPTION']
+    variant_annotation_column_names = ['chromosome', 'position', 'allele', 'vep_sequence_chance', 'gene', 'feature', 'feature_type', 'consequence', 'cdna_position', 'cds_position', 'protein_position', 'amino_acids', 'codons', 'existing_variation', 'distance', 'strand', 'sift', 'polyphen', 'motif_name', 'motif_position', 'high_inf_position', 'motif_score_changes']
 
         
     for index, (filename, dataframes) in enumerate(zip(filenames, file_list)):
@@ -109,14 +106,92 @@ def check_headers(file_list, filenames, dataset, files_key):
             if dataframes.columns.values.tolist() != gwas_column_names:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in header of' + " " + filenames[x])    
-                    print('Please check requirements for correct header names')
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct GWAS summary statistcs format')
+                    print('\n This dataset has now been removed..')
                     del file_list[x]
-            # else:
-            #     print('Header for' + " " + filenames[index] + " " + 'matches requirements')
                 pass
    
-                  
+        if dataset == 'eQTL':
+            if dataframes.columns.values.tolist() != eQTL_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct eQTL summary statistics format')
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+            
+        if dataset == 'pQTL':
+            if dataframes.columns.values.tolist() != pQTL_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct pQTL summary statistics format')
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+
+        if dataset == 'mQTL':
+            if dataframes.columns.values.tolist() != mQTL_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct mQTL summary statistics format')
+                    print('\n This dataset has now been removed..')                    
+                    del file_list[x]
+
+        if dataset == 'ewas':
+            if dataframes.columns.values.tolist() != ewas_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct EWAS summary statistics format')
+                    print('\n This dataset has now been removed..')                    
+                    del file_list[x]    
+
+        if dataset == 'metadata':
+            if dataframes.columns.values.tolist() != metadata_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct metadata summary statistics format')
+                    print('\n This dataset has now been removed..')                    
+                    del file_list[x]
+
+        if dataset == 'allele_freq':
+            if dataframes.columns.values.tolist() != allele_freq_ref_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct Allele frequency reference format')
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+        
+        if dataset == 'allele_map':
+            if dataframes.columns.values.tolist() != allele_MAP_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct Allele Map format')
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+
+        if dataset == 'ethnicity_codes':
+            if dataframes.columns.values.tolist() != ethnicity_codes_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct Ethnicity Codes format')
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+
+        if dataset == 'variant_annotation':
+            if dataframes.columns.values.tolist() != variant_annotation_column_names:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in header of' + " " + filenames[x])    
+                    print('Please check requirements for correct Variant annotation format')
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]                                
     return file_list
 
 
@@ -143,8 +218,8 @@ def check_columns(file_list, filenames, dataset, files_key):
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
             if ~dataframes.chromosome.astype(str).isin(chr_list).all() == True:
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Chromosome column\"' + " " + filenames[x])    
-                    print('This dataset has now been removed..')
+                    print('\nERROR found in "Chromosome column\"' + " " + filenames[x])    
+                    print('\n This dataset has now been removed..')
                     del file_list[x]
             else:
                 pass
@@ -154,7 +229,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Position column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Position column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -165,7 +240,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Effect allele frequency column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Effect allele frequency column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -176,7 +251,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 dataframe_to_remove.append(index)
                 
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Minor Allele Frequency column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Minor Allele Frequency column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
                 
@@ -187,7 +262,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.standard_error.any() <= 0:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Standard error column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Standard error column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
                 print('Standard error column, has incorrect entry')
@@ -199,7 +274,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.p.between(0,1).any() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "P-value column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "P-value column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -209,7 +284,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.strand.astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Strand column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Strand column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -219,7 +294,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.direction.astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Direction column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Direction column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -229,7 +304,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.original_strand.astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Original strand column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Original strand column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -239,7 +314,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.original_direction.astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Original direction column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Original direction column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -250,7 +325,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             
             if ~dataframes.chromosome.astype(str).isin(chr_list).all() == True:
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Chromosome column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Chromosome column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             
@@ -262,7 +337,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "Position column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "Position column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -272,7 +347,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.cdna_position.dtype != np.int64:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "cDNA position column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "cDNA position column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -281,7 +356,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             if dataframes.cds_position.dtype != np.int64:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('ERROR found in "cds position column\"' + " " + filenames[x])    
+                    print('\n ERROR found in "cds position column\"' + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
             else:
@@ -324,15 +399,21 @@ def add_data_to_existing(existing_summary, summary_to_add, compression, type, ou
     if compression is None:
         summary_to_add = pd.read_csv(summary_to_add, engine='python', compression = 'infer', header = 0, sep=',')
         list_of_files.append(summary_to_add)
+    
+        if not list_of_files:
+            raise ValueError('\n For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
 
     if compression == 'gzip':
         summary_to_add = pd.read_csv(summary_to_add, engine='python', compression = 'gzip', header = 0, sep=',')
         list_of_files.append(summary_to_add)
+    
+        if not list_of_files:
+            raise ValueError('\n For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
 
     summary_to_add_filename = existing_summary  
     files_key = dict(zip(summary_to_add_filename, list_of_files))
 
-    new_summary_checked_columns = check_columns(file_list = list_of_files, compression = None, filenames = summary_to_add_filename, dataset = type, files_key = files_key)
+    new_summary_checked_columns = check_columns(file_list = list_of_files, filenames = summary_to_add_filename, dataset = type, files_key = files_key)
     concatenate_all_tables(file_list = list_of_files, out = out)
     return 
 

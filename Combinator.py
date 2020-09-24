@@ -1,4 +1,4 @@
-# Program that combines a biological summary stats & metadata (V.0.0.1)
+# Creates and concatenates biological summary stats & metadata (V.0.0.1)
 
 # August 2020 - NNRCO ZIFZ
 
@@ -57,6 +57,17 @@ parser.add_argument("--type", "--t", type=str, help= "Select predetermined biolo
 parser.add_argument("--gzip", "--gz", help= "Used when files are compressed (gzip)", default=None, nargs='?', const='gzip', required = False)
 parser.add_argument("--out", "--o", type=str, help= "Output filename ")
 
+MASTHEAD = "\n \n"
+MASTHEAD = "*********************************************************************\n"
+MASTHEAD += "* Combinator\n"
+MASTHEAD += "* Summary: creates and concatenates biological summary stats & metadata \n"
+MASTHEAD += "* Version: v0.0.1\n"
+MASTHEAD += "* Novo Nordisk Reseach Centre Oxford\n"
+MASTHEAD += "*********************************************************************\n"
+
+
+header = MASTHEAD
+print(header)
 
 # Creates new summary '.csv' from multiple files in a directory    
         
@@ -65,12 +76,13 @@ if __name__ == '__main__':
     
     
     if args.type not in type_list:
-        raise ValueError('Datatype not valid, please see documentation for more detail')
+        raise ValueError('\n Datatype not valid, please see documentation for more detail')
     else:
         if args.type is None:
-            raise ValueError('The --out flag is required')
+            raise ValueError('\n The --out flag is required')
     
     if args.create_summary:
+        print('\n JOB: Creating new summary to existing file....')
         
         if args.gzip:
             list_of_files = read_compressed_files(args.create_summary, compression= True)
@@ -84,16 +96,20 @@ if __name__ == '__main__':
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
         
         if not list_of_files:
-            raise ValueError('For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
+            raise ValueError('\n For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
         concat_file = concatenate_all_tables(file_list = list_of_files, out=args.out)
 
-        print('....Successful concatenation of' + " " + args.out + "!")
+        print('\n ....Successful concatenation of' + " " + args.out)
 
 
     if args.existing_summary and args.summary_to_add:
-
-        add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, type = args.type, compression = args.gzip, out = args.out)
-        print('....Successful addition of' + " " + args.out + "!")
+        print('\n JOB: Adding new summary to existing file....')
+        if args.gzip:
+            add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, type = args.type, compression = True, out = args.out)
+            
+        else:
+            add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, type = args.type, compression = None, out = args.out)
+            print('\n ....Successful addition of' + " " + args.out + " " + "to" + " " + args.existing_summary)
 
    
 
