@@ -15,9 +15,11 @@ Currently, the program only takes 10 specific biological dataset types, which th
 Currently *(v0.0.1)*, Combinator can take in 10 specified datasets, they are the following:
 
 1. **Study-related meta data**
+
 When specifying this datatype on the CLI, use: metadata
 
 Required column names in header:
+
 'data_set_identifier', 'study', 'cohort', 'study_type', 'study_year', 'study_genotyping_platform', 'number_of_participants_study', 'number_of_cases_study', 'number_of_controls_study', 'ancestry', 'original_build', 'trait_type', 'efo_category', 'efo_term', 'icd10', 'icd9', 'opcs4', 'opcs3', 'gene', 'transcript', 'protein', 'metabolite', 'source', 'trait', 'trait_abbreviation', 'file_raw', 'time1_raw', 'time2_raw', 'file_processed', 'time1_processed'.
 
 2. **GWAS summary statistics**
