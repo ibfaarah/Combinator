@@ -56,3 +56,16 @@ When specifying this datatype on the CLI, use: *variant*. Required column names 
 
 
 ## Usage
+
+Combinator has two main purposes which will be explained in this section. 1) Creating a summary file 2) Adding new summary file to an existing file. Each functions are similar, but are used in the different situations depending on the users need. 
+
+
+**Creating a summary file**
+
+This functions creates the initial summary file from all the existing files. All files to be concatenated will need to be stored in a specific directory, as the program will use all *files* in the stated directory to be processed, it hasn't got the capability to differentiate between files. In addition, all files are required to be either all compressed as (.csv.gz) or (.csv). For compressed files it necessary to pass the '--gzip/--gz' parameter. It is also required to provide an output name for the resulting file using '--out/--o'.
+
+'python Combinator.py \
+ --creating_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
+ --type gwas \
+ --gzip \
+ --out t2d_summary \'
