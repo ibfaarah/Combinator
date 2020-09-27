@@ -62,7 +62,11 @@ Combinator has two main purposes which will be explained in this section. 1) Cre
 
 **Creating a summary file**
 
-This functions creates the initial summary file from all the existing files. All files to be concatenated will need to be stored in a specific directory, as the program will use all *files* in the stated directory to be processed, it hasn't got the capability to differentiate between files. In addition, all files are required to be either all compressed as (.csv.gz) or (.csv). For compressed files it necessary to pass the '--gzip/--gz' parameter. It is also required to provide an output name for the resulting file using '--out/--o'.
+This functions creates the initial summary file from all the existing files. All files to be concatenated will need to be stored in a specific directory, as the program will use all *files* in the stated directory to be processed, it hasn't got the capability to differentiate between files. In addition, all files are required to be either all compressed as (.csv.gz) or (.csv). For compressed files it necessary to pass the '--gzip/--gz' parameter. It is also required to provide an output name for the resulting file using '--out/--o'. 
+
+*Example 1*
+
+Processing several compressed GWAS summary statistics file stored in a directory
 
 ```
 python Combinator.py \
@@ -71,3 +75,5 @@ python Combinator.py \
  --gzip \
  --out t2d_summary \
  ```
+
+ The expected output is a compressed gzipped file irrespective of whether or not the initial directory contains compressed or standard format files.
