@@ -4,6 +4,8 @@
 
 
 # Import libaries
+import time
+import timeit
 import os
 import glob
 import csv
@@ -70,21 +72,27 @@ MASTHEAD += "-------------------------------------------------------------------
 
 header = MASTHEAD
 print(header)
+time.sleep(5)
+
+start = timeit.default_timer()
+stop = timeit.default_timer() 
+
 
 # Creates new summary '.csv' from multiple files in a directory    
         
 if __name__ == '__main__':
     args = parser.parse_args()
     
+  
     
     if args.type not in type_list:
-        raise ValueError('\n Datatype not valid, please see documentation for more detail')
+        raise ValueError('\nDatatype not valid, please see documentation for more detail')
     else:
         if args.type is None:
-            raise ValueError('\n The --out flag is required')
+            raise ValueError('\nThe --out flag is required')
     
     if args.create_summary:
-        print('\n JOB: Creating new summary to existing file....')
+        print('\nJOB: Creating new summary....')
         
         if args.gzip:
             list_of_files = read_compressed_files(args.create_summary, compression= True)
@@ -98,27 +106,30 @@ if __name__ == '__main__':
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
         
         if not list_of_files:
-            raise ValueError('\n For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
+            raise ValueError('\nFor files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
         concat_file = concatenate_all_tables(file_list = list_of_files, out=args.out)
 
-        print('\n ....Successful concatenation of' + " " + args.out)
+        print('\n....Successful concatenation of' + " " + args.out)
 
 
     if args.existing_summary and args.summary_to_add:
-        print('\n JOB: Adding new summary to existing file....')
+        print('\nJOB: Adding new summary to existing file....')
         
         if args.gzip:
             if args.summary_to_add.endswith('.csv'):
-                raise ValueError('\n For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
+                raise ValueError('\nFor files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
             else:
                 add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, dataset = args.type, compression = True, out = args.out)
             
         if not args.gzip:
             if args.summary_to_add.endswith('.csv.gz'):
-                raise ValueError('\n For files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
+                raise ValueError('\nFor files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
             else:
                 add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, dataset = args.type, compression = None, out = args.out)
 
+
+execution_time = stop - start
+print("\nProgram Executed in "+str(round(execution_time, 2)) + " " +"seconds\n") 
 
 
    
