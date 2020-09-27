@@ -95,7 +95,7 @@ python Combinator.py \
  ```
 
 ## License
-This project is licensed by Novo Nordisk/NNRCO
+This project is licensed by Novo Nordisk Research Centre Oxford (NNRCO)
 
 ## Authors
 Ibrahim Bashe Farah (zifz@novonordisk.com, NNRCO Computational Biology)
