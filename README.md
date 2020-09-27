@@ -66,7 +66,7 @@ This functions creates the initial summary file from all the existing files. All
 
 *Example 1*
 
-Processing several compressed GWAS summary statistics file stored in a directory
+Processing several compressed GWAS summary statistics file stored in a directory.
 
 ```
 python Combinator.py \
@@ -77,3 +77,20 @@ python Combinator.py \
  ```
 
  The expected output is a compressed gzipped file irrespective of whether or not the initial directory contains compressed or standard format files.
+
+ **Adding a summary file to existing summary file**
+
+ This function will be used more frequently as more data sets are collected. Two flags are required,  '--existing_summary' - this flag takes a single compressed (.csv.gz) file as input, the second flag is '--summary_to_add', this takes in a single file and can be either compressed (requires --gzip/--gz) or standard format. As with the previous example, this function also requires, '--out/--o'.
+
+ *Example 2*
+
+ Takes a single compressed GWAS summary statistics from *Example 1* and add a new T2D GWAS summary statistics.
+
+ ```
+ python Combinator.py \
+ --existing_summary t2d_summary \
+ --summary_to_add new_g \
+ --out updated_t2d_summary \
+ ```
+
+
