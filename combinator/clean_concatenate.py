@@ -26,7 +26,7 @@ def read_compressed_files(path, compression):
         directory = glob.glob(path + "/*.csv")
 
         for file in directory:
-            df = pd.read_csv(file, engine='python', compression = 'infer', header = 0, sep=',')
+            df = pd.read_csv(file, engine='python', header = 0, sep=',')
             file_list.append(df)
 
     if compression == True:
@@ -84,7 +84,7 @@ def check_headers(file_list, filenames, dataset, files_key):
     pQTL_column_names = ['data_set_identifier', 'gene', 'protein', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'p', 'z', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'heptval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'name']
     mQTL_column_names = ['data_set_identifier','metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_freqeuncy', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name']
     gwas_column_names = ['data_set_identifier','efo_term','chromosome','position','reference_allele','alternative_allele','snp','strand','effect_allele_frequency','minor_allele_frequency','effect_estimate','standard_error','p','z','genotype_imputation_score','direction','number_of_participants','number_of_cases','number_of_controls','hetisq','hetdf','hetpval','hweq','original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score']
-    ewas_column_names = ['data_set_identifier', 'probe_name', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number']
+    ewas_column_names = ['data_set_identifier', 'probe_name', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name']
     allele_freq_ref_column_names = ['chromosome', 'allele', 'cohort', 'ethnicity', 'genotyping_method', 'alternative_allele_frequency', 'minor_allele']
     allele_MAP_column_names = ['chromosome', 'position', 'allele', 'type']
     ethnicity_codes_column_names = ['ETHNICITY', 'DESCRIPTION']
@@ -99,7 +99,7 @@ def check_headers(file_list, filenames, dataset, files_key):
         if dataset == 'gwas':
             
             # Checks that all entries in 'position' column have correct data type, only integers (int64)
-            if dataframes.columns.values.tolist() != gwas_column_names:
+            if dataframes.columns.str.strip().tolist() != gwas_column_names:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in header of' + " " + filenames[x])    
@@ -107,7 +107,7 @@ def check_headers(file_list, filenames, dataset, files_key):
                     print('This dataset has now been removed..')
                     del file_list[x]
                 pass
-   
+                
         if dataset == 'eQTL':
             if dataframes.columns.values.tolist() != eQTL_column_names:
                 dataframe_to_remove.append(index)
@@ -136,7 +136,7 @@ def check_headers(file_list, filenames, dataset, files_key):
                     del file_list[x]
 
         if dataset == 'ewas':
-            if dataframes.columns.values.tolist() != ewas_column_names:
+            if dataframes.columns.tolist() != ewas_column_names:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in header of' + " " + filenames[x])    
@@ -198,7 +198,7 @@ def check_columns(file_list, filenames, dataset, files_key):
     '''
     
     logging_df = []
-    error = []
+    error = ['NA', np.nan]
 
     chr_list = ['1', '2', '3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','X','Y', 'MT']
     directions = ['+','-']
@@ -208,18 +208,23 @@ def check_columns(file_list, filenames, dataset, files_key):
     for index, (filename, dataframes) in enumerate(zip(filenames, file_list)):
         
         dataframe_to_remove= []
-        
+        # print(file_list)
+        # print(filenames)
         # This is for 'GWAS summary statistics data
-        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL' or 'ewas':
+        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL':
+            
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
             if ~dataframes.chromosome.astype(str).isin(chr_list).all() == True:
+                dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
                     print('\n This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
-            
+        
+        
             # Checks that all entries in 'position' column have correct data type, only integers (int64)
             if dataframes.position.dtype != np.int64:
                 dataframe_to_remove.append(index)
@@ -228,44 +233,56 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\n ERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
-               
+        
+             
             # Checks that all entries in 'effect allele frequency' column has values between (0 & 1)
-            if dataframes.effect_allele_frequency.between(0,1).all() != True:
+            if dataframes.effect_allele_frequency.astype(str).isin(error).all() != True:
+                pass
+            elif dataframes.effect_allele_frequency.between(0,1).all() != True:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('\nERROR found in "Effect allele frequency column\"' + " "  + "in" + " " + filenames[x])    
+                    print('\nERROR found in "Effect Allele Frequency column\"' + " "  + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
 
             # Checks that all entries in 'minor allele frequency' column has values between (0 & 0.5)    
-            if dataframes.minor_allele_frequency.between(0,0.5).all() != True:
+        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL':
+            if dataframes.minor_allele_frequency.astype(str).isin(error).all() != True:
+                pass
+            elif dataframes.minor_allele_frequency.between(0,0.5).all() != True:
                 dataframe_to_remove.append(index)
                 
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Minor Allele Frequency column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
                 
             else:
                 pass
-
+      
+        
             # Checks that all entries in 'Standard error' column has values greater than (0)    
-            if dataframes.standard_error.any() <= 0:
+        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL':
+            if dataframes.standard_error.all() <= 0:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Standard error column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
                 print('Standard error column, has incorrect entry')
     
             else:
                 pass
-            
+   
             # Checks that all entries in 'p-value' column has values between (0 & 1)    
             if dataframes.p.between(0,1).any() != True:
                 dataframe_to_remove.append(index)
@@ -273,9 +290,11 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "P-value column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
-            
+
+        
             # Checks that all entries in 'strand' column are either ('+' or '-' )
             if dataframes.strand.astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
@@ -283,6 +302,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "Strand column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
 
@@ -293,6 +313,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "Direction column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
             
@@ -303,6 +324,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "Original strand column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
             
@@ -313,17 +335,19 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "Original direction column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
             
            
-        elif dataset == 'allele_map' or 'variant':
+        if dataset == 'allele_map' or 'variant':
             
             if ~dataframes.chromosome.astype(str).isin(chr_list).all() == True:
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             
             else:
                 pass
@@ -336,6 +360,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
 
@@ -346,6 +371,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "cDNA position column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
 
@@ -355,6 +381,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                     print('\nERROR found in "cds position column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
+                    del filenames[x]
             else:
                 pass
                    

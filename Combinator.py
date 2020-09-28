@@ -30,7 +30,7 @@ eQTL_column_names = ['data_set_identifier', 'gene', 'transcript', 'source', 'chr
 pQTL_column_names = ['data_set_identifier', 'gene', 'protein', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'p', 'z', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'heptval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'name']
 mQTL_column_names = ['data_set_identifier','metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_freqeuncy', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name']
 gwas_column_names = ['data_set_identifier','efo_term','chromosome','position','reference_allele','alternative_allele','snp','strand','effect_allele_frequency','minor_allele_frequency','effect_estimate','standard_error','p','z','genotype_imputation_score','direction','number_of_participants','number_of_cases','number_of_controls','hetisq','hetdf','hetpval','hweq','original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score']
-ewas_column_names = ['data_set_identifier', 'probe_name', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number']
+ewas_column_names = ['data_set_identifier', 'probe_name', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name']
 allele_freq_ref_column_names = ['chromosome', 'allele', 'cohort', 'ethnicity', 'genotyping_method', 'alternative_allele_frequency', 'minor_allele']
 allele_MAP_column_names = ['chromosome', 'position', 'allele', 'type']
 ethnicity_codes = ['ETHNICITY', 'DESCRIPTION']
@@ -61,13 +61,14 @@ parser.add_argument("--out", "--o", type=str, help= "Output filename ")
 
 MASTHEAD = "...\n"
 MASTHEAD = "-------------------------------------------------------------------------\n"
-MASTHEAD = "-------------------------------------------------------------------------\n"
+MASTHEAD = "\n-------------------------------------------------------------------------\n"
 MASTHEAD += "* Combinator\n"
 MASTHEAD += "* Summary: creates and concatenates biological summary stats & metadata \n"
 MASTHEAD += "* Version: v0.0.1\n"
 MASTHEAD += "* Novo Nordisk Reseach Centre Oxford\n"
 MASTHEAD += "-------------------------------------------------------------------------\n"
 MASTHEAD += "-------------------------------------------------------------------------\n"
+
 
 
 header = MASTHEAD
@@ -106,7 +107,7 @@ if __name__ == '__main__':
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
         
         if not list_of_files:
-            raise ValueError('\nFor files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
+            raise ValueError('\n Invalid files.')
         concat_file = concatenate_all_tables(file_list = list_of_files, out=args.out)
 
         print('\n....Successful concatenation of' + " " + args.out)
