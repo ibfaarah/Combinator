@@ -415,7 +415,13 @@ def add_data_to_existing(existing_summary, summary_to_add, compression, dataset,
     '''
     list_of_files = []
     existing_summary_csv = existing_summary
-    existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'gzip', header = 0, sep=',')
+    
+    if existing_summary_csv.endswith('.csv.gz'):
+        existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'gzip', header = 0, sep=',')
+    else:
+        existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'infer', header = 0, sep=',')
+
+    # existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'gzip', header = 0, sep=',')
 
     if compression is None:
         summary_to_add_dataframe = pd.read_csv(summary_to_add, engine='python', compression = 'infer', header = 0, sep=',')
@@ -444,7 +450,7 @@ def add_data_to_existing(existing_summary, summary_to_add, compression, dataset,
         final_frame = final_frame.sort_values(by=['chromosome'])
         out = out + '.csv.gz'
         final_frame.to_csv(out, index=False, compression = 'gzip')
-        print('....Successful addition of' + " " + out + " " + "to" + " " + os.path.basename(existing_summary_csv) + ".")
+        print('....Successful addition of' + " " + os.path.basename(summary_to_add) + " " + "to" + " " + os.path.basename(existing_summary_csv) + ".")
     return 
 
 # final_frame = add_data_to_existing(existing_summary = '/Users/ibrahim/Documents/Novo Nordisk/Combinator/ppp.csv', summary_to_add = '/Users/ibrahim/Documents/Novo Nordisk/Combinator/data/to_append/chr6_baso.csv', type = 'gwas', out = 'Hi')
