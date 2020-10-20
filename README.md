@@ -70,7 +70,7 @@ Processing several compressed GWAS summary statistics file stored in a directory
 
 ```
 python Combinator.py \
- --creating_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
+ --create_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
  --type gwas \
  --gzip \
  --out t2d_summary \

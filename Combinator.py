@@ -15,7 +15,7 @@ import pandas as pd
 import argparse
 
 # Import all functions
-from combinator.clean_concatenate import read_compressed_files, read_compressed_filenames 
+from combinator.clean_concatenate import read_compressed_files, read_compressed_filenames, extract_column_names
 from combinator.clean_concatenate import check_headers, check_columns, concatenate_all_tables, add_data_to_existing
 
 
@@ -45,6 +45,7 @@ parser = argparse.ArgumentParser(description='Combinator: This tool concatenates
 parser.add_argument("--create_summary", "--cs", type=str, help= "Directory path that contains only files that will be concatenated")
 parser.add_argument("--existing_summary", "--es", type=str, help= "Single existing summary .csv that will concatenate new data")
 parser.add_argument("--summary_to_add", "--sta", type=str, help= "Single new summary file to be concatenated (.csv) ")
+parser.add_argument("--set_header", "--col", type=str, help= "File containing list of column names to be used for concatenation")
 parser.add_argument("--type", "--t", type=str, help= "Select predetermined biological dataset.........."
                     'For Metadata summary statistics: metadata.............'
                     'For GWAS summary statistics: gwas.............' 
@@ -56,6 +57,7 @@ parser.add_argument("--type", "--t", type=str, help= "Select predetermined biolo
                     'For Allele MAP: allele_map.............'
                     'For Ethnicity codes: ethnicity.............'
                     'For Variant Annotation: variant.............')
+parser.add_argument("--strict", "--st", type=str, help= "Strict mode. Files without matching column names will be removed")                    
 parser.add_argument("--gzip", "--gz", help= "Used when files are compressed (gzip)", default=None, nargs='?', const='gzip', required = False)
 parser.add_argument("--out", "--o", type=str, help= "Output filename ")
 
@@ -96,14 +98,25 @@ if __name__ == '__main__':
         print('\nJOB: Creating new summary....')
         
         if args.gzip:
+            if args.set_header.endswith('.csv'):
+                column_list = extract_column_names(path = args.set_header, type = 'csv')
+            else:
+                column_list = extract_column_names(path = args.set_header, type = 'txt')
+            
             list_of_files = read_compressed_files(args.create_summary, compression= True)
             filenames = read_compressed_filenames(args.create_summary, compression= True)
+        
         else:
+            if args.set_header.endswith('.csv'):
+                column_list = extract_column_names(path = args.set_header, type = 'csv')
+            else:
+                column_list = extract_column_names(path = args.set_header, type = 'txt')
+            
             list_of_files = read_compressed_files(args.create_summary, compression= None)
             filenames = read_compressed_filenames(args.create_summary, compression= None)
         
         files_key = dict(zip(filenames, list_of_files))
-        list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key)
+        list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key, column_list=column_list, strict= args.strict)
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
         
         if not list_of_files:
