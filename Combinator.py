@@ -116,7 +116,7 @@ if __name__ == '__main__':
             filenames = read_compressed_filenames(args.create_summary, compression= None)
         
         files_key = dict(zip(filenames, list_of_files))
-        list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key, column_list=column_list, strict= args.strict)
+        list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key, column_names=column_list, strict= args.strict)
         list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
         
         if not list_of_files:
