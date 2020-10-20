@@ -57,7 +57,7 @@ parser.add_argument("--type", "--t", type=str, help= "Select predetermined biolo
                     'For Allele MAP: allele_map.............'
                     'For Ethnicity codes: ethnicity.............'
                     'For Variant Annotation: variant.............')
-parser.add_argument("--strict", "--st", type=str, help= "Strict mode. Files without matching column names will be removed")                    
+parser.add_argument("--strict", "--st", action='store_true', help= "Strict mode. Files without matching column names will be removed")                    
 parser.add_argument("--gzip", "--gz", help= "Used when files are compressed (gzip)", default=None, nargs='?', const='gzip', required = False)
 parser.add_argument("--out", "--o", type=str, help= "Output filename ")
 
