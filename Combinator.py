@@ -1,4 +1,4 @@
-# Creates and concatenates biological summary stats & metadata (V.0.0.1)
+# Creates and concatenates biological summary stats & metadata (V.0.0.5)
 
 # August 2020 - NNRCO ZIFZ
 
@@ -66,7 +66,7 @@ MASTHEAD = "--------------------------------------------------------------------
 MASTHEAD = "\n-------------------------------------------------------------------------\n"
 MASTHEAD += "* Combinator\n"
 MASTHEAD += "* Summary: creates and concatenates biological summary stats & metadata \n"
-MASTHEAD += "* Version: v0.0.1\n"
+MASTHEAD += "* Version: v0.0.5\n"
 MASTHEAD += "* Novo Nordisk Reseach Centre Oxford\n"
 MASTHEAD += "-------------------------------------------------------------------------\n"
 MASTHEAD += "-------------------------------------------------------------------------\n"
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         
         if not list_of_files:
             raise ValueError('\n Invalid files.')
-        concat_file = concatenate_all_tables(file_list = list_of_files, out=args.out)
+        concat_file = concatenate_all_tables(file_list = list_of_files, column_list=column_list, out=args.out)
 
         print('\n....Successful concatenation of' + " " + args.out)
 
@@ -133,13 +133,13 @@ if __name__ == '__main__':
             if args.summary_to_add.endswith('.csv'):
                 raise ValueError('\nFor files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
             else:
-                add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, dataset = args.type, compression = True, out = args.out)
+                add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, dataset = args.type, compression = True, set_header = args.set_header, strict = args.strict, out = args.out)
             
         if not args.gzip:
             if args.summary_to_add.endswith('.csv.gz'):
                 raise ValueError('\nFor files that are (.csv.gz) please use --gzip flag. For (.csv) files no flag required.')
             else:
-                add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, dataset = args.type, compression = None, out = args.out)
+                add_data_to_existing(existing_summary = args.existing_summary, summary_to_add = args.summary_to_add, dataset = args.type, compression = None, set_header = args.set_header, strict = args.strict, out = args.out)
 
 
 execution_time = stop - start

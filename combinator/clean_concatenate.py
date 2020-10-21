@@ -334,7 +334,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
 
 
-def concatenate_all_tables(file_list, out):
+def concatenate_all_tables(file_list, column_list, out):
     '''
     Takes list of dataframe that are correctly formatted and 
     concatentates them into a single dataframe
@@ -342,6 +342,7 @@ def concatenate_all_tables(file_list, out):
     final_frame = pd.concat(file_list)
     final_frame = final_frame.sort_values(by=['chromosome'])
     final_frame['statistics_imputation_score'] = 'NA'
+    final_frame.columns = column_list
     out = out + '.csv.gz'
     return final_frame.to_csv(out, index=False, compression = 'gzip')
 
@@ -349,13 +350,19 @@ def concatenate_all_tables(file_list, out):
 
 
 
-def add_data_to_existing(existing_summary, summary_to_add, compression, dataset, out):
+def add_data_to_existing(existing_summary, summary_to_add, compression, dataset, set_header, strict, out):
     '''
     Takes a new dataframe, correctly formatted and/or cleaned 
     thereafter add to an existing dataframe.
     '''
     list_of_files = []
     existing_summary_csv = existing_summary
+    
+    if set_header.endswith('.csv'):
+        column_list = extract_column_names(path = set_header, type = 'csv')
+    else:
+        column_list = extract_column_names(path = set_header, type = 'txt')
+    
     
     if existing_summary_csv.endswith('.csv.gz'):
         existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'gzip', header = 0, sep=',')
@@ -380,7 +387,7 @@ def add_data_to_existing(existing_summary, summary_to_add, compression, dataset,
     summary_file_name.append(basename)
     files_key = dict(zip(summary_file_name, list_of_files))
 
-    list_of_files = check_headers(file_list = list_of_files, filenames = summary_file_name, dataset = dataset, files_key = files_key)
+    list_of_files = check_headers(file_list = list_of_files, filenames = summary_file_name, dataset = dataset, files_key = files_key, column_names=column_list, strict= strict)
     list_of_files = check_columns(file_list = list_of_files, filenames = summary_file_name, dataset = dataset, files_key = files_key)
 
     if not list_of_files:
@@ -389,6 +396,7 @@ def add_data_to_existing(existing_summary, summary_to_add, compression, dataset,
         list_of_files.append(existing_summary)
         final_frame = pd.concat(list_of_files)
         final_frame = final_frame.sort_values(by=['chromosome'])
+        final_frame.columns = column_list
         out = out + '.csv.gz'
         final_frame.to_csv(out, index=False, compression = 'gzip')
         print('....Successful addition of' + " " + os.path.basename(summary_to_add) + " " + "to" + " " + os.path.basename(existing_summary_csv) + ".")
