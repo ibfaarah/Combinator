@@ -32,7 +32,7 @@ When specifying this datatype on the CLI, use: `pQTL`. Required column names in 
 
 5. **mQTL summary statistics**
 
-When specifying this datatype on the CLI, use: `mQTL`. Required column names in header: *'data_set_identifier', 'metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_freqeuncy', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name'*
+When specifying this datatype on the CLI, use: `mQTL`. Required column names in header: *'data_set_identifier', 'metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name'*
 
 6. **EWAS summary statistics**
 
@@ -91,6 +91,7 @@ python Combinator.py \
  python Combinator.py \
  --existing_summary t2d_summary \
  --summary_to_add new_g \
+ --type gwas \
  --out updated_t2d_summary \
  ```
 

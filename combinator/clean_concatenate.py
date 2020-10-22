@@ -152,10 +152,10 @@ def check_columns(file_list, filenames, dataset, files_key):
         # print(file_list)
         # print(filenames)
         # This is for 'GWAS summary statistics data
-        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL':
+        if dataset == 'gwas':
     
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
-            if ~dataframes.chromosome.astype(str).isin(chr_list).all() == True:
+            if dataframes[dataframes.columns[2]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
@@ -167,7 +167,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
 
             # Checks that all entries in 'position' column have correct data type, only integers (int64)
-            if dataframes.position.dtype != np.int64:
+            if dataframes[dataframes.columns[3]].dtype != np.int64:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -180,9 +180,9 @@ def check_columns(file_list, filenames, dataset, files_key):
 
         
             # Checks that all entries in 'effect allele frequency' column has values between (0 & 1)
-            if dataframes.effect_allele_frequency.astype(str).isin(error).all() != True:
+            if dataframes[dataframes.columns[8]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes.effect_allele_frequency.between(0,1).all() != True:
+            elif dataframes[dataframes.columns[8]].between(0,1).all() != True:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -194,10 +194,10 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
 
             # Checks that all entries in 'minor allele frequency' column has values between (0 & 0.5)    
-        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL':
-            if dataframes.minor_allele_frequency.astype(str).isin(error).all() != True:
+        if dataset == 'gwas':
+            if dataframes[dataframes.columns[9]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes.minor_allele_frequency.between(0,0.5).all() != True:
+            elif dataframes[dataframes.columns[9]].between(0,0.5).all() != True:
                 dataframe_to_remove.append(index)
         
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -211,8 +211,8 @@ def check_columns(file_list, filenames, dataset, files_key):
 
 
             # Checks that all entries in 'Standard error' column has values greater than (0)    
-        if dataset == 'gwas' or 'eQTL' or 'pQTL' or 'mQTL':
-            if dataframes.standard_error.all() <= 0:
+        if dataset == 'gwas':
+            if dataframes[dataframes.columns[11]].all() <= 0:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Standard error column\"' + " " + "in" + " " + filenames[x])    
@@ -225,7 +225,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
 
             # Checks that all entries in 'p-value' column has values between (0 & 1)    
-            if dataframes.p.between(0,1).any() != True:
+            if dataframes[dataframes.columns[12]].between(0,1).any() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "P-value column\"' + " " + "in" + " " + filenames[x])    
@@ -237,7 +237,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
 
             # Checks that all entries in 'strand' column are either ('+' or '-' )
-            if dataframes.strand.astype(str).isin(directions).all() != True:
+            if dataframes[dataframes.columns[7]].astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Strand column\"' + " " + "in" + " " + filenames[x])    
@@ -248,7 +248,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
 
             # Checks that all entries in 'direction' column are either ('+' or '-' )
-            if dataframes.direction.astype(str).isin(directions).all() != True:
+            if dataframes[dataframes.columns[15]].astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Direction column\"' + " " + "in" + " " + filenames[x])    
@@ -259,7 +259,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
     
             # Checks that all entries in 'original strand' column are either ('+' or '-' )
-            if dataframes.original_strand.astype(str).isin(directions).all() != True:
+            if dataframes[dataframes.columns[25]].astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Original strand column\"' + " " + "in" + " " + filenames[x])    
@@ -270,7 +270,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
     
             # Checks that all entries in 'original direction' column are either ('+' or '-' )
-            if dataframes.original_direction.astype(str).isin(directions).all() != True:
+            if dataframes[dataframes.columns[26]].astype(str).isin(directions).all() != True:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Original direction column\"' + " " + "in" + " " + filenames[x])    
@@ -283,7 +283,7 @@ def check_columns(file_list, filenames, dataset, files_key):
     
         if dataset == 'allele_map' or 'variant':
     
-            if ~dataframes.chromosome.astype(str).isin(chr_list).all() == True:
+            if dataframes[dataframes.columns[].astype(str).isin(chr_list).all() == False:
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
