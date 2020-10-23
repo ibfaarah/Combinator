@@ -697,7 +697,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             cds_position - dataframes.iloc[:,[9]]
             cdna_position - dataframes.iloc[:,[8]]
             '''
-            
+
             if dataframes[dataframes.columns[0]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -742,6 +742,7 @@ def check_columns(file_list, filenames, dataset, files_key):
         
 
         # allele_MAP
+        
         if  dataset == 'allele_map':
 
             '''
