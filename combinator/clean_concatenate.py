@@ -153,8 +153,23 @@ def check_columns(file_list, filenames, dataset, files_key):
         # print(filenames)
         # This is for 'GWAS summary statistics data
         
+        # gwas
+
         if dataset == 'gwas':
-    
+            
+            '''
+            chromosome - ~dataframes.iloc[:,[2]]
+            position - dataframes.iloc[:,[3]]
+            effect_allele_frequency - dataframes.iloc[:,[8]]
+            minor_allele_frequency - dataframes.iloc[:,[9]]
+            standard_error - dataframes.iloc[:,[11]]
+            p - dataframes.iloc[:,[12]]
+            strand - dataframes.iloc[:,[7]]
+            direction - dataframes.iloc[:,[15]]
+            original_strand - dataframes.iloc[:,[25]]
+            original_direction - dataframes.iloc[:,[26]]
+            '''
+
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
             if dataframes[dataframes.columns[2]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
@@ -280,9 +295,26 @@ def check_columns(file_list, filenames, dataset, files_key):
                     del filenames[x]
             else:
                 pass
-    
-        if dataset == 'eQTL':
+        
 
+        # eqtl
+
+        if dataset == 'eQTL':
+        
+         
+            '''
+            chromosome - ~dataframes.iloc[:,[4]]
+            position - dataframes.iloc[:,[5]]
+            effect_allele_frequency - dataframes.iloc[:,[10]]
+            minor_allele_frequency - dataframes.iloc[:,[11]]
+            standard_error - dataframes.iloc[:,[13]]
+            p - dataframes.iloc[:,[15]]
+            strand - dataframes.iloc[:,[9]]
+            direction - dataframes.iloc[:,[17]]
+            original_strand - dataframes.iloc[:,[27]]
+            original_direction - dataframes.iloc[:,[28]]
+            '''
+        
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
             if dataframes[dataframes.columns[4]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
@@ -397,9 +429,22 @@ def check_columns(file_list, filenames, dataset, files_key):
             else:
                 pass
 
+        # mqtl
 
         if dataset == 'mQTL':
 
+            '''
+            chromosome - ~dataframes.iloc[:,[3]]
+            position - dataframes.iloc[:,[4]]
+            effect_allele_frequency - dataframes.iloc[:,[9]]
+            minor_allele_frequency - dataframes.iloc[:,[10]]
+            standard_error - dataframes.iloc[:,[12]]
+            p - dataframes.iloc[:,[14]]
+            strand - dataframes.iloc[:,[8]]
+            direction - dataframes.iloc[:,[16]]
+            original_strand - dataframes.iloc[:,[26]]
+            original_direction - dataframes.iloc[:,[27]]
+            '''
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
             if dataframes[dataframes.columns[3]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
@@ -512,9 +557,22 @@ def check_columns(file_list, filenames, dataset, files_key):
                     del filenames[x]
             else:
                 pass
-    
+        
+        # pqtl
         if dataset == 'pQTL':
 
+            '''
+            chromosome - ~dataframes.iloc[:,[4]]
+            position - dataframes.iloc[:,[5]]
+            effect_allele_frequency - dataframes.iloc[:,[10]]
+            minor_allele_frequency - dataframes.iloc[:,[11]]
+            standard_error - dataframes.iloc[:,[13]]
+            p - dataframes.iloc[:,[14]]
+            strand - p - dataframes.iloc[:,[9]]
+            direction - dataframes.iloc[:,[17]]
+            original_strand - dataframes.iloc[:,[27]] 
+            original_direction - dataframes.iloc[:,[28]] 
+            '''
 
             if dataframes[dataframes.columns[4]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
@@ -629,8 +687,17 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
 
 
+        # variant
+
         if  dataset == 'variant':
 
+            '''
+            chromosome - dataframes.iloc[:,[0]]
+            position - dataframes.iloc[:,[1]]
+            cds_position - dataframes.iloc[:,[9]]
+            cdna_position - dataframes.iloc[:,[8]]
+            '''
+            
             if dataframes[dataframes.columns[0]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -672,8 +739,15 @@ def check_columns(file_list, filenames, dataset, files_key):
                     del filenames[x]
             else:
                 pass
+        
 
+        # allele_MAP
         if  dataset == 'allele_map':
+
+            '''
+            chromosome - dataframes.iloc[:,[0]]
+            position - dataframes.iloc[:,[1]]
+            '''           
 
             if dataframes[dataframes.columns[0]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
@@ -739,7 +813,7 @@ def add_data_to_existing(existing_summary, summary_to_add, compression, dataset,
     else:
         existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'infer', header = 0, sep=',')
 
-    # existing_summary = pd.read_csv(existing_summary, engine='python', compression = 'gzip', header = 0, sep=',')
+
 
     if compression is None:
         summary_to_add_dataframe = pd.read_csv(summary_to_add, engine='python', compression = 'infer', header = 0, sep=',')
