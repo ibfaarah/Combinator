@@ -8,6 +8,46 @@ Due to high-throughput bioloigcal/medical data being generated, there are a coup
 
 Combinator is a command line interface (CLI), written in python, breifly, it allow for QC'ing, data harmonising and concatenation of datasets - so that further analysis can be undertaken. Combinator, runs over both standard (.csv) file formats as well gzipped file formats (.csv.gz) for large datasets, but requires the appropriate flag to used (`--gzip`). The output is a single gzipped file (.csv.gz).
 
+## Usage
+
+Combinator has two main purposes which will be explained in this section. 1) Creating a summary file 2) Adding new summary file to an existing file. Each functions are similar, but are used in the different situations depending on the users need. 
+
+
+**Creating a summary file**
+
+This functions creates the initial summary file from all the existing files. All files to be concatenated will need to be stored in a specific directory, as the program will use all *files* in the stated directory to be processed, it hasn't got the capability to differentiate between files. In addition, all files are required to be either all compressed as (.csv.gz) or (.csv). For compressed files it necessary to pass the `--gzip` / `--gz` parameter. It is also required to provide an output name for the resulting file using `--out` / `--o`. 
+
+*Example 1*
+
+Processing several compressed GWAS summary statistics file stored in a directory.
+
+```
+python Combinator.py \
+ --create_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
+ --type gwas \
+ --gzip \
+ --out t2d_summary \
+ ```
+
+ The expected output is a compressed gzipped file irrespective of whether or not the initial directory contains compressed or standard format files.
+
+
+ **Adding a summary file to existing summary file**
+
+ This function will be used more frequently as more data sets are collected, each would be required to be concatenated to the master summary file. For this, two flags are required,  `--existing_summary` - this flag takes a single compressed (.csv.gz) file as input, the second flag is `--summary_to_add`, this also takes in a single file but can be either compressed (requires `--gzip` / `--gz`) or standard format. As with the previous example, this function also requires, `--out` / `--o`.
+
+ *Example 2*
+
+ Takes a single compressed GWAS summary statistics from *Example 1* and add a new T2D GWAS summary statistics.
+
+ ```
+ python Combinator.py \
+ --existing_summary t2d_summary \
+ --summary_to_add new_g \
+ --type gwas \
+ --out updated_t2d_summary \
+ ```
+
 ## Dataset types
 
 Currently for `v0.0.1`, the program takes 10 specific biological dataset types, which the user is expected state using (`--type`, see details below). For each data type, there is a predefined format for the header (see detail below). First, the program checks to see  whether the dataset header matches the expected datatype `--type` specified, if there is a mismatch the dataset will be reomved, the user will then be notified and will be required to rectify in line with the correct header (specified below) before trying again. Furthermore, the program also qc's column entries to ensure incorrect data type (e.g. integer, string etc) and outliers are removed. If these are detected, the dataframe is removed and error message, specifying the file in question and what column contains the issue.
@@ -55,45 +95,7 @@ When specifying this datatype on the CLI, use: `ethnicity`. Required column name
 When specifying this datatype on the CLI, use: `variant`. Required column names in header: *'chromosome', 'position', 'allele', 'vep_sequence_chance', 'gene', 'feature', 'feature_type', 'consequence', 'cdna_position', 'cds_position', 'protein_position', 'amino_acids', 'codons', 'existing_variation', 'distance', 'strand', 'sift', 'polyphen', 'motif_name', 'motif_position', 'high_inf_position', 'motif_score_changes'*
 
 
-## Usage
 
-Combinator has two main purposes which will be explained in this section. 1) Creating a summary file 2) Adding new summary file to an existing file. Each functions are similar, but are used in the different situations depending on the users need. 
-
-
-**Creating a summary file**
-
-This functions creates the initial summary file from all the existing files. All files to be concatenated will need to be stored in a specific directory, as the program will use all *files* in the stated directory to be processed, it hasn't got the capability to differentiate between files. In addition, all files are required to be either all compressed as (.csv.gz) or (.csv). For compressed files it necessary to pass the `--gzip` / `--gz` parameter. It is also required to provide an output name for the resulting file using `--out` / `--o`. 
-
-*Example 1*
-
-Processing several compressed GWAS summary statistics file stored in a directory.
-
-```
-python Combinator.py \
- --create_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
- --type gwas \
- --gzip \
- --out t2d_summary \
- ```
-
- The expected output is a compressed gzipped file irrespective of whether or not the initial directory contains compressed or standard format files.
-
-
- **Adding a summary file to existing summary file**
-
- This function will be used more frequently as more data sets are collected, each would be required to be concatenated to the master summary file. For this, two flags are required,  `--existing_summary` - this flag takes a single compressed (.csv.gz) file as input, the second flag is `--summary_to_add`, this also takes in a single file but can be either compressed (requires `--gzip` / `--gz`) or standard format. As with the previous example, this function also requires, `--out` / `--o`.
-
- *Example 2*
-
- Takes a single compressed GWAS summary statistics from *Example 1* and add a new T2D GWAS summary statistics.
-
- ```
- python Combinator.py \
- --existing_summary t2d_summary \
- --summary_to_add new_g \
- --type gwas \
- --out updated_t2d_summary \
- ```
 
 ## License
 This project is licensed by Novo Nordisk Research Centre Oxford (NNRCO)
