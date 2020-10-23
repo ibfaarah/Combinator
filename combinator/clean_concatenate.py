@@ -152,6 +152,7 @@ def check_columns(file_list, filenames, dataset, files_key):
         # print(file_list)
         # print(filenames)
         # This is for 'GWAS summary statistics data
+        
         if dataset == 'gwas':
     
             # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
@@ -194,7 +195,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 pass
 
             # Checks that all entries in 'minor allele frequency' column has values between (0 & 0.5)    
-        if dataset == 'gwas':
+
             if dataframes[dataframes.columns[9]].astype(str).isin(error).all() != True:
                 pass
             elif dataframes[dataframes.columns[9]].between(0,0.5).all() != True:
@@ -211,7 +212,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
 
             # Checks that all entries in 'Standard error' column has values greater than (0)    
-        if dataset == 'gwas':
+
             if dataframes[dataframes.columns[11]].all() <= 0:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -280,33 +281,389 @@ def check_columns(file_list, filenames, dataset, files_key):
             else:
                 pass
     
-    
-        if dataset == 'allele_map' or 'variant':
-    
-            if dataframes[dataframes.columns[].astype(str).isin(chr_list).all() == False:
+        if dataset == 'eQTL':
+
+            # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
+            if dataframes[dataframes.columns[4]].astype(str).isin(chr_list).all() == False:
+                dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
-                    print('This dataset has now been removed..')
+                    print('\n This dataset has now been removed..')
                     del file_list[x]
                     del filenames[x]
-    
             else:
                 pass
 
-            # Checks that all entries in 'position' column have correct data type, only integers (int64)
-            if dataframes.position.dtype != np.int64:
+
+            if dataframes[dataframes.columns[5]].dtype != np.int64:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('\nERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
+                    print('\n ERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
                     print('This dataset has now been removed..')
                     del file_list[x]
                     del filenames[x]
             else:
                 pass
 
-        elif  dataset == 'variant':
-            if dataframes.cdna_position.dtype != np.int64:
+            if dataframes[dataframes.columns[10]].astype(str).isin(error).all() != True:
+                pass
+            elif dataframes[dataframes.columns[10]].between(0,1).all() != True:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Effect Allele Frequency column\"' + " "  + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[11]].astype(str).isin(error).all() != True:
+                pass
+            elif dataframes[dataframes.columns[11]].between(0,0.5).all() != True:
+                dataframe_to_remove.append(index)
+        
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Minor Allele Frequency column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+        
+            else:
+                pass   
+
+            if dataframes[dataframes.columns[11]].all() <= 0:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Standard error column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+                print('Standard error column, has incorrect entry')
+
+            else:
+                pass
+
+            if dataframes[dataframes.columns[15]].between(0,1).any() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "P-value column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+
+            if dataframes[dataframes.columns[9]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Strand column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[17]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Direction column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[27]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Original strand column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+    
+
+            if dataframes[dataframes.columns[28]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Original direction column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+
+        if dataset == 'mQTL':
+
+            # Checks that all entries in 'chromosome' column are correct, 1-22 & X, Y, MT
+            if dataframes[dataframes.columns[3]].astype(str).isin(chr_list).all() == False:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+
+            if dataframes[dataframes.columns[4]].dtype != np.int64:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[9]].astype(str).isin(error).all() != True:
+                pass
+            elif dataframes[dataframes.columns[9]].between(0,1).all() != True:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Effect Allele Frequency column\"' + " "  + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[10]].astype(str).isin(error).all() != True:
+                pass
+            elif dataframes[dataframes.columns[10]].between(0,0.5).all() != True:
+                dataframe_to_remove.append(index)
+        
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Minor Allele Frequency column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+        
+            else:
+                pass   
+
+            if dataframes[dataframes.columns[12]].all() <= 0:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Standard error column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+                print('Standard error column, has incorrect entry')
+
+            else:
+                pass
+
+            if dataframes[dataframes.columns[14]].between(0,1).any() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "P-value column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[8]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Strand column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[16]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Direction column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[26]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Original strand column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+    
+
+            if dataframes[dataframes.columns[27]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Original direction column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+    
+        if dataset == 'pQTL':
+
+
+            if dataframes[dataframes.columns[4]].astype(str).isin(chr_list).all() == False:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+
+            if dataframes[dataframes.columns[5]].dtype != np.int64:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[10]].astype(str).isin(error).all() != True:
+                pass
+            elif dataframes[dataframes.columns[10]].between(0,1).all() != True:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Effect Allele Frequency column\"' + " "  + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[11]].astype(str).isin(error).all() != True:
+                pass
+            elif dataframes[dataframes.columns[11]].between(0,0.5).all() != True:
+                dataframe_to_remove.append(index)
+        
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Minor Allele Frequency column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+        
+            else:
+                pass   
+
+            if dataframes[dataframes.columns[13]].all() <= 0:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Standard error column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+                print('Standard error column, has incorrect entry')
+
+            else:
+                pass
+
+            if dataframes[dataframes.columns[14]].between(0,1).any() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "P-value column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[9]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Strand column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[17]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Direction column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[27]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Original strand column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+    
+
+            if dataframes[dataframes.columns[28]].astype(str).isin(directions).all() != True:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Original direction column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+
+        if  dataset == 'variant':
+
+            if dataframes[dataframes.columns[0]].astype(str).isin(chr_list).all() == False:
+                dataframe_to_remove.append(index)
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
+                    print('\n This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+    
+            if dataframes[dataframes.columns[1]].dtype != np.int64:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[9]].dtype != np.int64:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\nERROR found in "cds position column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass
+
+            if dataframes[dataframes.columns[8]].dtype != np.int64:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "cDNA position column\"' + " " + "in" + " " + filenames[x])    
@@ -316,15 +673,28 @@ def check_columns(file_list, filenames, dataset, files_key):
             else:
                 pass
 
-            if dataframes.cds_position.dtype != np.int64:
+        if  dataset == 'allele_map':
+
+            if dataframes[dataframes.columns[0]].astype(str).isin(chr_list).all() == False:
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
-                    print('\nERROR found in "cds position column\"' + " " + "in" + " " + filenames[x])    
-                    print('This dataset has now been removed..')
+                    print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
+                    print('\n This dataset has now been removed..')
                     del file_list[x]
                     del filenames[x]
             else:
                 pass
+    
+            if dataframes[dataframes.columns[1]].dtype != np.int64:
+                dataframe_to_remove.append(index)
+
+                for x in sorted(dataframe_to_remove, reverse=True):
+                    print('\n ERROR found in "Position column\"' + " " + "in" + " " + filenames[x])    
+                    print('This dataset has now been removed..')
+                    del file_list[x]
+                    del filenames[x]
+            else:
+                pass  
             
             
     return file_list
