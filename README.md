@@ -8,6 +8,9 @@ Due to high-throughput bioloigcal/medical data being generated, there are a coup
 
 Combinator is a command line interface (CLI), written in python, breifly, it allow for QC'ing, data harmonising and concatenation of datasets - so that further analysis can be undertaken. Combinator, runs over both standard (.csv) file formats as well gzipped file formats (.csv.gz) for large datasets, but requires the appropriate flag to used (`--gzip`). The output is a single gzipped file (.csv.gz).
 
+## Commands 
+
+
 ## Usage
 
 Combinator has two main purposes which will be explained in this section. 1) Creating a summary file 2) Adding new summary file to an existing file. Each functions are similar, but are used in the different situations depending on the users need. 
@@ -52,47 +55,130 @@ python Combinator.py \
 
 Currently for `v0.0.1`, the program takes 10 specific biological dataset types, which the user is expected state using (`--type`, see details below). For each data type, there is a predefined format for the header (see detail below). First, the program checks to see  whether the dataset header matches the expected datatype `--type` specified, if there is a mismatch the dataset will be reomved, the user will then be notified and will be required to rectify in line with the correct header (specified below) before trying again. Furthermore, the program also qc's column entries to ensure incorrect data type (e.g. integer, string etc) and outliers are removed. If these are detected, the dataframe is removed and error message, specifying the file in question and what column contains the issue.
 
+In order for Combinator to carry out quality quality checks for columns, it is strongly recommended that you follow the column index rule for each dataset provided below. This allows for qc to be carried irrespective of the column name. 
+
 Currently , Combinator can take in 10 specified datasets, they are the following:
+
+
 
 1. **Study-related meta data**
 
-When specifying this datatype on the CLI, use: `metadata`. Required column names in header: *'data_set_identifier', 'study', 'cohort', 'study_type', 'study_year', 'study_genotyping_platform', 'number_of_participants_study', 'number_of_cases_study', 'number_of_controls_study', 'ancestry', 'original_build', 'trait_type', 'efo_category', 'efo_term', 'icd10', 'icd9', 'opcs4', 'opcs3', 'gene', 'transcript', 'protein', 'metabolite', 'source', 'trait', 'trait_abbreviation', 'file_raw', 'time1_raw', 'time2_raw', 'file_processed', 'time1_processed'*
+When specifying this datatype on the CLI, use: `metadata`. Example column names in header: 
+
+*'data_set_identifier', 'study', 'cohort', 'study_type', 'study_year', 'study_genotyping_platform', 'number_of_participants_study', 'number_of_cases_study', 'number_of_controls_study', 'ancestry', 'original_build', 'trait_type', 'efo_category', 'efo_term', 'icd10', 'icd9', 'opcs4', 'opcs3', 'gene', 'transcript', 'protein', 'metabolite', 'source', 'trait', 'trait_abbreviation', 'file_raw', 'time1_raw', 'time2_raw', 'file_processed', 'time1_processed'*
 
 2. **GWAS summary statistics**
 
-When specifying this datatype on the CLI, use: `gwas`. Required column names in header: *'data_set_identifier','efo_term','chromosome','position','reference_allele','alternative_allele','snp','strand','effect_allele_frequency','minor_allele_frequency','effect_estimate','standard_error','p','z','genotype_imputation_score','direction','number_of_participants','number_of_cases','number_of_controls','hetisq','hetdf','hetpval','hweq','original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score'*
+When specifying this datatype on the CLI, use: `gwas`. Example column names in header: 
+
+*'data_set_identifier','efo_term','chromosome','position','reference_allele','alternative_allele','snp','strand','effect_allele_frequency','minor_allele_frequency','effect_estimate','standard_error','p','z','genotype_imputation_score','direction','number_of_participants','number_of_cases','number_of_controls','hetisq','hetdf','hetpval','hweq','original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score'*
+
+### GWAS column indexes
+
+| Column Name              | Column Index |
+|--------------------------|:------------:|
+| Chromosome               | 2            |
+| Position                 | 3            |
+| Effect Allele Frequency  | 4            |
+| Minor Allele Frequency   | 5            |
+| Standard Error           | 11           |
+| P-value                  | 12           |
+| Strand                   | 7            |
+| Direction                | 15           |
+| Original Strand          | 25           |
+| Original Direction       | 26           |
+
 
 3. **eQTL summary statistics**
 
-When specifying this datatype on the CLI, use:  `eQTL`. Required column names in header: *'data_set_identifier', 'gene', 'transcript', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score'*
+When specifying this datatype on the CLI, use:  `eQTL`. Example column names in header: 
+
+### eQTL column indexes
+
+*'data_set_identifier', 'gene', 'transcript', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score'*
+
+| Column Name              | Column Index |
+|--------------------------|:------------:|
+| Chromosome               | 4            |
+| Position                 | 5            |
+| Effect Allele Frequency  | 10           |
+| Minor Allele Frequency   | 11           |
+| Standard Error           | 13           |
+| P-value                  | 15           |
+| Strand                   | 9            |
+| Direction                | 17           |
+| Original Strand          | 27           |
+| Original Direction       | 28           |
 
 4. **pQTL summary statistics**
 
-When specifying this datatype on the CLI, use: `pQTL`. Required column names in header: *'data_set_identifier', 'gene', 'protein', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'p', 'z', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'heptval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'name'*
+When specifying this datatype on the CLI, use: `pQTL`. Example column names in header: 
+
+### pQTL column indexes
+
+*'data_set_identifier', 'gene', 'protein', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'p', 'z', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'heptval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'name'*
+
+| Column Name              | Column Index |
+|--------------------------|:------------:|
+| Chromosome               | 4            |
+| Position                 | 5            |
+| Effect Allele Frequency  | 10           |
+| Minor Allele Frequency   | 11           |
+| Standard Error           | 13           |
+| P-value                  | 14           |
+| Strand                   | 9            |
+| Direction                | 17           |
+| Original Strand          | 27           |
+| Original Direction       | 28           |
 
 5. **mQTL summary statistics**
 
-When specifying this datatype on the CLI, use: `mQTL`. Required column names in header: *'data_set_identifier', 'metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name'*
+When specifying this datatype on the CLI, use: `mQTL`. Example column names in header: 
+
+### mQTL column indexes
+
+*'data_set_identifier', 'metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name'*
+
+| Column Name              | Column Index |
+|--------------------------|:------------:|
+| Chromosome               | 3            |
+| Position                 | 4            |
+| Effect Allele Frequency  | 9            |
+| Minor Allele Frequency   | 10           |
+| Standard Error           | 12           |
+| P-value                  | 14           |
+| Strand                   | 8            |
+| Direction                | 16           |
+| Original Strand          | 26           |
+| Original Direction       | 27           |
 
 6. **EWAS summary statistics**
 
-When specifying this datatype on the CLI, use: `ewas`. Required column names in header: *'data_set_identifier', 'probe_name', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number'*
+When specifying this datatype on the CLI, use: `ewas`. Example column names in header: *'data_set_identifier', 'probe_name', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'probe_chromosome', 'probe_position', 'type', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number'*
 
 7. **Allele frequency reference cohorts**
 
-When specifying this datatype on the CLI, use: `allele_freq`. Required column names in header: *'chromosome', 'allele', 'cohort', 'ethnicity', 'genotyping_method', 'alternative_allele_frequency', 'minor_allele'*
+When specifying this datatype on the CLI, use: `allele_freq`. Example column names in header: 
+
+*'chromosome', 'allele', 'cohort', 'ethnicity', 'genotyping_method', 'alternative_allele_frequency', 'minor_allele'*
 
 8. **Allele MAP**
 
-When specifying this datatype on the CLI, use: `allele_map`. Required column names in header: *'chromosome', 'position', 'allele', 'type'*
+When specifying this datatype on the CLI, use: `allele_map`. Example column names in header: 
+
+*'chromosome', 'position', 'allele', 'type'*
 
 9. **Ethinicity codes**
 
-When specifying this datatype on the CLI, use: `ethnicity`. Required column names in header: *'ETHNICITY', 'DESCRIPTION'*
+When specifying this datatype on the CLI, use: `ethnicity`. Example column names in header: 
+
+*'ETHNICITY', 'DESCRIPTION'*
 
 10. **Variant annotation**
 
-When specifying this datatype on the CLI, use: `variant`. Required column names in header: *'chromosome', 'position', 'allele', 'vep_sequence_chance', 'gene', 'feature', 'feature_type', 'consequence', 'cdna_position', 'cds_position', 'protein_position', 'amino_acids', 'codons', 'existing_variation', 'distance', 'strand', 'sift', 'polyphen', 'motif_name', 'motif_position', 'high_inf_position', 'motif_score_changes'*
+When specifying this datatype on the CLI, use: `variant`. Example column names in header: 
+
+*'chromosome', 'position', 'allele', 'vep_sequence_chance', 'gene', 'feature', 'feature_type', 'consequence', 'cdna_position', 'cds_position', 'protein_position', 'amino_acids', 'codons', 'existing_variation', 'distance', 'strand', 'sift', 'polyphen', 'motif_name', 'motif_position', 'high_inf_position', 'motif_score_changes'*
 
 
 
