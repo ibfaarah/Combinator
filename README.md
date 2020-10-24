@@ -93,9 +93,10 @@ When specifying this datatype on the CLI, use: `gwas`. Example column names in h
 
 When specifying this datatype on the CLI, use:  `eQTL`. Example column names in header: 
 
-#### eQTL column indexes
 
 *'data_set_identifier', 'gene', 'transcript', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score'*
+
+#### eQTL column indexes
 
 | Column Name              | Column Index |
 |--------------------------|:------------:|
@@ -114,9 +115,9 @@ When specifying this datatype on the CLI, use:  `eQTL`. Example column names in 
 
 When specifying this datatype on the CLI, use: `pQTL`. Example column names in header: 
 
-#### pQTL column indexes
-
 *'data_set_identifier', 'gene', 'protein', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'p', 'z', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'heptval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'name'*
+
+#### pQTL column indexes
 
 | Column Name              | Column Index |
 |--------------------------|:------------:|
@@ -135,9 +136,9 @@ When specifying this datatype on the CLI, use: `pQTL`. Example column names in h
 
 When specifying this datatype on the CLI, use: `mQTL`. Example column names in header: 
 
-#### mQTL column indexes
-
 *'data_set_identifier', 'metabolite', 'source', 'chromosome', 'position', 'reference_allele', 'alternative_allele', 'snp', 'strand', 'effect_allele_frequency', 'minor_allele_frequency', 'effect_estimate', 'standard_error', 'z', 'p', 'genotype_imputation_score', 'direction', 'number_of_participants', 'number_of_cases', 'number_of_controls', 'hetisq', 'hetdf', 'hetpval', 'hweq', 'original_effect_allele', 'original_other_allele', 'original_strand', 'original_direction', 'original_effect_allele_frequency', 'statistics_imputation_score', 'gene', 'fdr', 'name'*
+
+#### mQTL column indexes
 
 | Column Name              | Column Index |
 |--------------------------|:------------:|
