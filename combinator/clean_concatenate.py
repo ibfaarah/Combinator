@@ -25,7 +25,7 @@ def extract_column_names(path, type):
         file = open(path, 'r')
         column_list = file.read().split(',')
         
-    # df.columns = list_of_names // using this change column names in a dataframe using list
+
 
     return column_list
 # print(extract_column_names(path = '/Users/ibrahim/Documents/Novo_Nordisk/Combinator/data/chr1_baso.csv', type = 'csv'))
@@ -742,7 +742,7 @@ def check_columns(file_list, filenames, dataset, files_key):
         
 
         # allele_MAP
-        
+
         if  dataset == 'allele_map':
 
             '''
