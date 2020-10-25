@@ -1,6 +1,6 @@
 # Combinator
 
-A tool creates and concatenates biological summary stats & metadata `V.0.0.1`
+A tool creates and concatenates biological summary stats & metadata `V.0.0.5`
 
 ## Background
 
@@ -8,7 +8,17 @@ Due to high-throughput bioloigcal/medical data being generated, there are a coup
 
 Combinator is a command line interface (CLI), written in python, breifly, it allow for QC'ing, data harmonising and concatenation of datasets - so that further analysis can be undertaken. Combinator, runs over both standard (.csv) file formats as well gzipped file formats (.csv.gz) for large datasets, but requires the appropriate flag to used (`--gzip`). The output is a single gzipped file (.csv.gz).
 
-## Commands 
+## Modes
+There are two modes which the programs runs on, *strict* (`--strict`) and *lenient* (default). The modes are based around the file column headers that a user is required to provide using (`--set_header`) command. This command takes two types of files in order to specify the final header. 1) Comma separated value file (.txt format) containing the list of column (ordered) 2) One of the files to be concatenated that contains the users preferred column header (.csv format). The column names provided using this parameter will serve as the column names in the final output file.
+
+1. Strict mode (`--strict`)
+
+This mode will, only concatenate files that contain the exact number of columns and names (case and space sensitive). Any files that do not meet this stringent requirements will be deleted, name of the file will be notified so that the user can correct this file. The argument `--strict` is necessary for this mode to run, no other value is required.
+
+2. Lenient (default)
+
+This is the default mode of the program. The user will still be required to provide the column names using the mandatory `--set_header`. In lenient mode, the program first checks that the list of column names provided using the `--set_header` parameter matches, if this is not the case then the program checks moves to the next step. Here the program checks to see whether the file to be concatenated by the user has the same number of columns as the columns provided in `--set_header` argument. If the number of columns match, the file will be concatenated despite the name of the columns not matching - however, the user will be presented with a warning to let them know that the concatenation will be based on 'number of columns' and not the 'column name' and may present some potential issue in later analysis. 
+
 
 
 ## Usage
