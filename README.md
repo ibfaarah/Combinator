@@ -20,7 +20,6 @@ This mode will, only concatenate files that contain the exact number of columns 
 This is the default mode of the program. The user will still be required to provide the column names using the mandatory `--set_header`. In lenient mode, the program first checks that the list of column names provided using the `--set_header` parameter matches, if this is not the case then the program checks moves to the next step. Here the program checks to see whether the file to be concatenated by the user has the same number of columns as the columns provided in `--set_header` argument. If the number of columns match, the file will be concatenated despite the name of the columns not matching - however, the user will be presented with a warning to let them know that the concatenation will be based on 'number of columns' and not the 'column name' and may present some potential issue in later analysis. 
 
 
-
 ## Usage
 
 Combinator has two main purposes which will be explained in this section. 1) Creating a summary file 2) Adding new summary file to an existing file. Each functions are similar, but are used in the different situations depending on the users need. 
@@ -39,6 +38,7 @@ python Combinator.py \
  --create_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
  --type gwas \
  --gzip \
+ --strict \
  --out t2d_summary \
  ```
 
