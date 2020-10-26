@@ -106,7 +106,7 @@ def check_headers(file_list, filenames, files_key, dataset, column_names, strict
                     print('Please check requirements follow required column names')
                     print('This dataset has now been removed..')
                     del file_list[x]
-        
+                    del filenames[x]
         elif strict == False:
             
             if dataframes.columns.str.strip().tolist() != column_names:
