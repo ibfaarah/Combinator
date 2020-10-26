@@ -107,6 +107,7 @@ def check_headers(file_list, filenames, files_key, dataset, column_names, strict
                     print('This dataset has now been removed..')
                     del file_list[x]
                     del filenames[x]
+        
         elif strict == False:
             
             if dataframes.columns.str.strip().tolist() != column_names:
@@ -118,8 +119,10 @@ def check_headers(file_list, filenames, files_key, dataset, column_names, strict
                     for x in sorted(dataframe_to_warn, reverse=True):
                         print('\nWARNING: Header mismatch found in' + " " + filenames[x])
                         print('File will be concatenated, however, beware of potential errors')
+                        del file_list[x]
+                        del filenames[x]
                 
-                else:
+                if number_of_columns != template_column:
                     dataframe_to_remove.append(index)
                     for x in sorted(dataframe_to_remove, reverse=True):
                         print('\nERROR found in header of' + " " + filenames[x])
