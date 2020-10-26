@@ -37,11 +37,11 @@ Processing several compressed GWAS summary statistics file stored in a directory
 
 ```
 python Combinator.py \
- --create_summary '/Users/Name/Directory/t2d_gwas_summary_folder' \
+ --create_summary '/Users/~/Combinator/data' \
  --type gwas \
- --gzip \
+ --set_header '/Users/~/Combinator/data/chr2_baso.csv' \
  --strict \
- --out t2d_summary \
+ --out test_output \
  ```
 
  The expected output is a compressed gzipped file irrespective of whether or not the initial directory contains compressed or standard format files.
