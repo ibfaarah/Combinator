@@ -204,7 +204,7 @@ def check_columns(file_list, filenames, dataset, files_key):
             # Checks that all entries in 'effect allele frequency' column has values between (0 & 1)
             if dataframes[dataframes.columns[8]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[8]].between(0,1).all() != True:
+            if dataframes[dataframes.columns[8]].between(0,1).all() != True:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -219,7 +219,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[9]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[9]].between(0,0.5).all() != True:
+            if dataframes[dataframes.columns[9]].between(0,0.5).all() != True:
                 dataframe_to_remove.append(index)
         
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -346,7 +346,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[10]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[10]].between(0,1).all() != True:
+            if dataframes[dataframes.columns[10]].between(0,1).all() != True:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -359,7 +359,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[11]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[11]].between(0,0.5).all() != True:
+            if dataframes[dataframes.columns[11]].between(0,0.5).all() != True:
                 dataframe_to_remove.append(index)
         
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -476,7 +476,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[9]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[9]].between(0,1).all() != True:
+            if dataframes[dataframes.columns[9]].between(0,1).all() != True:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -489,7 +489,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[10]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[10]].between(0,0.5).all() != True:
+            if dataframes[dataframes.columns[10]].between(0,0.5).all() != True:
                 dataframe_to_remove.append(index)
         
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -604,7 +604,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[10]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[10]].between(0,1).all() != True:
+            if dataframes[dataframes.columns[10]].between(0,1).all() != True:
                 dataframe_to_remove.append(index)
 
                 for x in sorted(dataframe_to_remove, reverse=True):
@@ -617,7 +617,7 @@ def check_columns(file_list, filenames, dataset, files_key):
 
             if dataframes[dataframes.columns[11]].astype(str).isin(error).all() != True:
                 pass
-            elif dataframes[dataframes.columns[11]].between(0,0.5).all() != True:
+            if dataframes[dataframes.columns[11]].between(0,0.5).all() != True:
                 dataframe_to_remove.append(index)
         
                 for x in sorted(dataframe_to_remove, reverse=True):
