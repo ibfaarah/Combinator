@@ -9,6 +9,7 @@ Due to high-throughput bioloigcal/medical data being generated, there are a coup
 Combinator is a command line interface (CLI), written in python, breifly, it allow for QC'ing, data harmonising and concatenation of datasets - so that further analysis can be undertaken. Combinator, runs over both standard (.csv) file formats as well gzipped file formats (.csv.gz) for large datasets, but requires the appropriate flag to used (`--gzip`). The output is a single gzipped file (.csv.gz).
 
 ## Modes
+
 There are two modes which the program runs on, *strict* (`--strict`) and *lenient* (default). The modes are based around the file column headers that a user is required to provide using (`--set_header`) command. This argument takes two types of files in order to specify the header which will be used to quality check and concatenate the files. 
 
 a) Comma separated value file (.txt format) containing the list of column (ordered) b) One of the files to be concatenated that contains the users preferred column header (.csv format). The column names provided using this parameter will serve as the column names in the final output file.
@@ -19,13 +20,12 @@ This mode will only concatenate files that contain the exact number of columns a
 
 2. Lenient (default)
 
-This is the default mode of the program. The user will still be required to provide the column names using the mandatory `--set_header`. In lenient mode, the program first checks that the list of column names provided using the `--set_header` parameter matches the header of all the files to be concatenated, if this is not the case then the program checks moves to the next step. Here the program checks to see whether the file to be concatenated by the user has the same number of columns as the columns provided in `--set_header` argument. If the number of columns match, the file will be concatenated despite the name of the columns not matching - however, the user will be presented with a warning to let them know that the concatenation will be based on 'number of columns' and not the 'column name' and may present some potential issue in later analysis. 
+This is the default mode of the program. The user will still be required to provide the column names using the mandatory `--set_header`. In lenient mode, the program first checks that the list of column names provided using the `--set_header` parameter matches the header of all the files to be concatenated, if this is not the case then the program checks moves to the next step. Here the program checks to see whether the file to be concatenated by the user has the same number of columns as the columns provided in `--set_header` argument. If the number of columns match, the file will be concatenated despite the name of the columns not matching - however, the user will be presented with a warning to let them know that the concatenation will be based on 'number of columns' and not the 'column name' and may present some potential issue in later analysis.
 
 
 ## Usage
 
 Combinator has two main purposes which will be explained in this section. 1) Creating a summary file 2) Adding new summary file to an existing file. Each functions are similar, but are used in the different situations depending on the users need. 
-
 
 **Creating a summary file**
 
@@ -59,6 +59,7 @@ python Combinator.py \
  python Combinator.py \
  --existing_summary t2d_summary \
  --summary_to_add new_g \
+ --set_header '/Users/~/Combinator/headers/gwas_example_header.txt' \
  --type gwas \
  --out updated_t2d_summary \
  ```
@@ -181,6 +182,13 @@ When specifying this datatype on the CLI, use: `allele_map`. Example column name
 
 *'chromosome', 'position', 'allele', 'type'*
 
+#### Allele MAP column indexes
+
+| Column Name | Column Index |
+|-------------|:------------:|
+| Chromosome  |       0      |
+| Position    |       1      |
+
 9. **Ethinicity codes**
 
 When specifying this datatype on the CLI, use: `ethnicity`. Example column names in header: 
@@ -193,7 +201,33 @@ When specifying this datatype on the CLI, use: `variant`. Example column names i
 
 *'chromosome', 'position', 'allele', 'vep_sequence_chance', 'gene', 'feature', 'feature_type', 'consequence', 'cdna_position', 'cds_position', 'protein_position', 'amino_acids', 'codons', 'existing_variation', 'distance', 'strand', 'sift', 'polyphen', 'motif_name', 'motif_position', 'high_inf_position', 'motif_score_changes'*
 
+#### Variant Annotation column indexes
 
+| Column Name   | Column Index |
+|---------------|:------------:|
+| Chromosome    |       0      |
+| Position      |       1      |
+| cds_position  |       9      |
+| cdna_position |       8      |
+
+## Quality checks
+
+There are some column checks that undergo qc, to ensure that there are no outlier or errors present in the summary statistics. Below are some of the columns that undergo this process.
+
+| Column Name             | Data type                                   | Condition value |
+|-------------------------|---------------------------------------------|:---------------:|
+| Chromosome              | gwas, eQTL, mQTL, pQTL, allele_map, variant | 1-22, X, Y & MT |
+| Position                | gwas, eQTL, mQTL, pQTL, allele_map, variant |     Integer     |
+| Effect Allele Frequency | gwas, eQTL, mQTL, pQTL,                     |   Between 0-1   |
+| Minor Allele Frequency  | gwas, eQTL, mQTL, pQTL                      |  Between 0-0.5  |
+| Standard Error          | gwas, eQTL, mQTL, pQTL                      |       <=0       |
+| P-value                 | gwas, eQTL, mQTL, pQTL                      |   Between 0-1   |
+| Strand                  | gwas, eQTL, mQTL, pQTL                      |      + or -     |
+| Direction               | gwas, eQTL, mQTL, pQTL                      |      + or -     |
+| Original Strand         | gwas, eQTL, mQTL, pQTL                      |      + or -     |
+| Original Direction      | gwas, eQTL, mQTL, pQTL                      |      + or -     |
+| cds                     | variant                                     | Integer         |
+| cdna                    | variant                                     | Integer         |
 
 
 ## License
