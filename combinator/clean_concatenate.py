@@ -181,7 +181,7 @@ def check_columns(file_list, filenames, dataset, files_key):
                 dataframe_to_remove.append(index)
                 for x in sorted(dataframe_to_remove, reverse=True):
                     print('\nERROR found in "Chromosome column\"' + " " + "in" + " " + filenames[x])    
-                    print('\n This dataset has now been removed..')
+                    print('This dataset has now been removed..')
                     del file_list[x]
                     del filenames[x]
             else:
