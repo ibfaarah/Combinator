@@ -45,14 +45,14 @@ def read_compressed_files(path, compression):
         directory = glob.glob(path + "/*.csv")
 
         for file in directory:
-            df = pd.read_csv(file, engine='python', header = 0, sep=',')
+            df = pd.read_csv(file, keep_default_na=False, engine='python', header = 0, sep=',')
             file_list.append(df)
 
     if compression == True:
         directory = glob.glob(path + "/*.csv.gz")
 
         for file in directory:
-            df = pd.read_csv(file, engine='python', compression = 'gzip', header = 0, sep=',')
+            df = pd.read_csv(file, keep_default_na=False, engine='python', compression = 'gzip', header = 0, sep=',')
             file_list.append(df)
 
             if not file_list:
@@ -97,6 +97,7 @@ def check_headers(file_list, filenames, files_key, dataset, column_names, strict
     dataframe_to_remove= []
     dataframe_to_warn = []
     for index, (filename, dataframes) in enumerate(zip(filenames, file_list)):
+        
         if strict == True:
             # if dataframes.columns.values.tolist() != column_names:
             if dataframes.columns.str.strip().tolist() != column_names:
@@ -159,8 +160,21 @@ def check_columns(file_list, filenames, dataset, files_key):
         # print(filenames)
         # This is for 'GWAS summary statistics data
         
+        # Remove files that have empty entries in last column as this means that there are unequal columns
+        dataframes[dataframes.columns[-1]].replace({None:'Empty_values'}, inplace=True)
+        
+        if dataframes[dataframes.columns[-1]].isin(['Empty_values']).any().any() == True:
+            dataframe_to_remove.append(index)
+            
+            for x in sorted(dataframe_to_remove, reverse=True):
+                print('\nERROR, rows are unequal in length in \"'+ " " + filenames[x])    
+                print('This dataset has now been removed..')
+                del file_list[x]
+                del filenames[x]
+        else:
+            pass
+       
         # gwas
-
         if dataset == 'gwas':
             
             '''
