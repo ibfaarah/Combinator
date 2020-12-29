@@ -1,6 +1,6 @@
 # Combinator
 
-A tool creates and concatenates biological summary stats & metadata `V.0.0.5`
+A tool creates and concatenates biological summary stats & metadata `V.0.1`
 
 ## Background
 
