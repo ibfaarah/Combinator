@@ -1,6 +1,6 @@
-# Creates and concatenates biological summary stats & metadata (V.0.0.5)
+# Creates and concatenates biological summary stats & metadata (V.0.1)
 
-# August 2020 - NNRCO ZIFZ
+# December 2020 - NNRCO ZIFZ
 
 
 # Import libaries
@@ -66,7 +66,7 @@ MASTHEAD = "--------------------------------------------------------------------
 MASTHEAD = "\n-------------------------------------------------------------------------\n"
 MASTHEAD += "* Combinator\n"
 MASTHEAD += "* Summary: creates and concatenates biological summary stats & metadata \n"
-MASTHEAD += "* Version: v0.0.5\n"
+MASTHEAD += "* Version: v0.1\n"
 MASTHEAD += "* Novo Nordisk Reseach Centre Oxford\n"
 MASTHEAD += "-------------------------------------------------------------------------\n"
 MASTHEAD += "-------------------------------------------------------------------------\n"
@@ -116,8 +116,8 @@ if __name__ == '__main__':
             filenames = read_compressed_filenames(args.create_summary, compression= None)
         
         files_key = dict(zip(filenames, list_of_files))
-        list_of_files = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key, column_names=column_list, strict= args.strict)
-        list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type, files_key = files_key)
+        list_of_files, filenames = check_headers(file_list = list_of_files, filenames=filenames, dataset = args.type, files_key = files_key, column_names=column_list, strict= args.strict)
+        list_of_files = check_columns(file_list = list_of_files, filenames=filenames,dataset = args.type)
         
         if not list_of_files:
             raise ValueError('\n Invalid files.')
